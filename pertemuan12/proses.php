@@ -1,0 +1,48 @@
+<?php
+// ----------
+// Contoh Proses Form POST
+// ----------
+$nama ='';
+$email ='';
+$pesan ='';
+$postErrors = [];
+$postSuccess = false;
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $nama = trim($_POST['nama'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $pesan = trim($_POST['pesan'] ?? '');
+    // Validasi sederhana
+    if ($nama === ''){
+        $postErrors[] = 'Nama wajib diisi.';
+    }
+    if($email === ''){
+        $postErrors[] = 'Email wajib diisi.';
+    } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $postErrors[] = 'Format email tidak valid.';
+    }
+    if($pesan === ''){
+        $postErrors[] = 'Pesan wajib diisi.';
+    }
+    if(empty($postErrors)){
+        $postSuccess = true;
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Dasar PHP Form - POST</title>
+</head>
+<body>
+    <h2>Contoh Proses Form POST</h2>
+    <?php if (!empty($postErrors)): ?>
+        <div class="error">
+            <strong>Validasi gagal:</strong>
+            <ul>
+                <?php foreach ($postErrors as $error): ?>
+                    <li><?=htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?><li>
+                <?php endforeach; ?>
+</body>
+</html>
